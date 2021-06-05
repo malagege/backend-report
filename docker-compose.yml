@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  backReport:
+    image: arm32v7/openjdk
+    command: "java -jar ./BackendReport-0.0.1-SNAPSHOT.jar"
+    volumes: 
+      - "./BackendReport-0.0.1-SNAPSHOT.jar:/BackendReport-0.0.1-SNAPSHOT.jar"
+      # - /etc/localtime:/etc/localtime:ro
+    environment: 
+      - "TZ=Asia/Taipei"
+    networks:
+      - traefik_network
+    expose: 
+      - "8080"
+    restart: always
+    labels:
+      - "traefik.http.routers.backReport.rule=Host(`${backendReportUrl}`)"
+      - "traefik.http.routers.backReport.tls=true"
+networks:
+  traefik_network:
+    external: true
